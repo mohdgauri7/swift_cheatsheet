@@ -1,0 +1,26 @@
+struct City: Codable {
+    let name: String
+}
+
+
+let city = City(name: "London")
+
+
+
+let encodedData = try JSONEncoder().encode(city)
+let jsonString = String(data: encodedData,
+                        encoding: .utf8)
+
+
+print(jsonString)
+
+It will output: Optional("{\"name\":\"London\"}"), perfect! We have successfully converted our object to a JSON string.
+
+
+
+if let dataFromJsonString = jsonString?.data(using: .utf8) {
+    let cityFromData = try JSONDecoder().decode(City.self,
+                                                from: dataFromJsonString)
+    
+    print(cityFromData.name)
+}
