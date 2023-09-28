@@ -1,4 +1,7 @@
- func SHA512(string: String) -> String {
+import CommonCrypto
+
+
+func SHA512(string: String) -> String {
         let length = Int(CC_SHA512_DIGEST_LENGTH)
         let messageData = string.data(using:.utf8)!
         var digestData = Data(count: length)
