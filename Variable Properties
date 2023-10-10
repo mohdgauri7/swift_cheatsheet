@@ -1,0 +1,106 @@
+------------------------ @State -------------------------------
+struct MyButton: View {
+    @State var buttonColor = Color.blue
+
+    var body: some View {
+        Button("Press me!") {
+            buttonColor = Color.red
+        }
+        .background(buttonColor)
+    }
+}
+
+
+------------------------ @Binding -------------------------------
+struct ContentView: View {
+    @State private var text = ""
+
+    var body: some View {
+        VStack {
+            TextField("Enter text", text: $text)
+            Button("Update text") {
+                text = "New text"
+            }
+            SecondView(text: $text)
+        }
+    }
+}
+
+struct SecondView: View {
+    @Binding var text: String
+
+    var body: some View {
+        Text(text)
+    }
+}
+
+
+
+
+------------------------ @ObservedObject -------------------------------
+
+class UserData: ObservableObject {
+    @Published var name = "John"
+}
+
+struct ContentView: View {
+    @ObservedObject var userData = UserData()
+
+    var body: some View {
+        VStack {
+            Text("Hello, \(userData.name)!")
+            TextField("Enter your name", text: $userData.name)
+        }
+    }
+}
+
+
+
+
+------------------------ @StateObject -------------------------------
+
+class UserData: ObservableObject {
+    @Published var name = "John"
+    @Published var age = 30
+}
+
+struct ContentView: View {
+    @StateObject var userData = UserData()
+    
+    var body: some View {
+        NavigationView {
+            VStack {
+                Text("Name: \(userData.name)")
+                Text("Age: \(userData.age)")
+                
+                NavigationLink(
+                    destination: ProfileView(userData: userData),
+                    label: {
+                        Text("Edit Profile")
+                    })
+            }
+            .navigationTitle("Home")
+        }
+    }
+}
+
+struct ProfileView: View {
+    @ObservedObject var userData: UserData
+    
+    var body: some View {
+        Form {
+            TextField("Name", text: $userData.name)
+            Stepper("Age: \(userData.age)", value: $userData.age)
+        }
+        .navigationTitle("Profile")
+    }
+}
+
+
+
+
+------------------------ @EnvironmentObject -------------------------------
+
+
+
+
